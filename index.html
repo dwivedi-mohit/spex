@@ -90,70 +90,76 @@
         }
 
         /* 
-           ZegoCloud forcefully applies inline styles and classes. 
-           We use !important to override their internal grid to force our 50/50 split.
-           Usually, Zego uses `.Q9_v_P6Zl1Lq6M4yik1m` or direct flex containers for internal videos.
+           🔥 STRICT OVERRIDES FOR OMEGLE LAYOUT 🔥
+           ZegoCloud forcefully applies arbitrary inline styles.
+           We'll use JS to assign custom classes, and CSS to enforce absolute strict rules.
         */
 
-        /* Attempt to target Zego's main video container wrapper */
-        #zego-mount>div {
-            width: 100vw !important;
-            height: 100vh !important;
-            background: #000 !important;
+        #zego-mount * {
+            max-width: none !important;
+            border-radius: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        /* Target the ZegoRoom aspect ratio wrapper and Break It */
-        #zego-mount>div>div:first-of-type {
+        /* Force Zego root wrappers to be exactly 100vw/100vh */
+        #zego-mount>div,
+        #zego-mount>div>div {
             width: 100vw !important;
             height: 100vh !important;
             min-width: 100vw !important;
             max-width: 100vw !important;
+            transform: none !important;
+            background: #000 !important;
+            position: absolute !important;
             top: 0 !important;
             left: 0 !important;
-            transform: none !important;
-            position: relative !important;
-            background: #000 !important;
-            padding: 0 !important;
             margin: 0 !important;
+            padding: 0 !important;
         }
 
-        /* Target the actual Video Container inside ZegoRoom (Flex Container) */
-        #zego-mount>div>div:first-of-type>div:first-of-type {
+        /* The flex container that holds the video cells */
+        .custom-zego-row,
+        #zego-mount div[style*="display: flex"][style*="flex-direction: row"],
+        #zego-mount div[style*="display:flex"][style*="flex-direction:row"] {
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
-            height: 100vh !important;
             width: 100vw !important;
+            height: 100vh !important;
             min-width: 100vw !important;
             max-width: 100vw !important;
+            justify-content: flex-start !important;
+            /* CRITICAL: Kills Zego's centering */
+            align-items: stretch !important;
             gap: 0 !important;
             padding: 0 !important;
             margin: 0 !important;
             background: #000 !important;
-            align-items: stretch !important;
-            justify-content: flex-start !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
         }
 
-        /* Target the individual video cells */
-        #zego-mount>div>div:first-of-type>div:first-of-type>div {
+        /* The individual video cells */
+        .custom-zego-cell {
             flex: 0 0 50vw !important;
             width: 50vw !important;
             max-width: 50vw !important;
             height: 100vh !important;
             position: relative !important;
-            border-radius: 0 !important;
-            overflow: hidden !important;
-            background: #000 !important;
             margin: 0 !important;
             padding: 0 !important;
             border: none !important;
+            background: #000 !important;
+            overflow: hidden !important;
         }
 
         /* Make actual videos fit correctly inside without stretching */
         #zego-mount video {
-            object-fit: cover !important;
             width: 100% !important;
             height: 100% !important;
+            object-fit: cover !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
@@ -273,7 +279,7 @@
             }
 
             /* Stack Videos Vertically on Mobile */
-            #zego-mount>div>div:first-of-type>div:first-of-type {
+            .custom-zego-row {
                 flex-direction: column !important;
                 padding: 0 !important;
                 margin: 0 !important;
@@ -282,7 +288,7 @@
                 max-width: 100vw !important;
             }
 
-            #zego-mount>div>div:first-of-type>div:first-of-type>div {
+            .custom-zego-cell {
                 flex: 0 0 50vh !important;
                 width: 100vw !important;
                 max-width: 100vw !important;
@@ -546,6 +552,45 @@
                     // though CSS overrides above are stronger
                     layout: "Grid"
                 });
+
+                // 🔥 THE BULLETPROOF FIX: JS MutationObserver to enforce Omegle layout 🔥
+                // ZegoCloud's internal React engine constantly applies inline constraints like max-width.
+                // We use an observer to catch when the videos render, and force our custom constraints.
+                const observer = new MutationObserver(() => {
+                    const zContainer = document.getElementById('zego-mount');
+                    if (!zContainer) return;
+
+                    const videos = zContainer.querySelectorAll('video');
+                    videos.forEach(video => {
+                        // Nuke any inherited inline styles on the video itself
+                        video.style.setProperty('object-fit', 'cover', 'important');
+                        video.style.setProperty('width', '100%', 'important');
+                        video.style.setProperty('height', '100%', 'important');
+                        video.style.setProperty('position', 'absolute', 'important');
+                        video.style.setProperty('top', '0', 'important');
+                        video.style.setProperty('left', '0', 'important');
+
+                        // 1. Identify the Cell wrapper (matches w-1/2 h-full)
+                        let cell = video.parentElement;
+                        // Sometimes Zego wraps video in an extra div. Traverse up slowly.
+                        while (cell && cell.parentElement && cell.id !== 'zego-mount' && cell.parentElement.children.length === 1) {
+                            cell = cell.parentElement;
+                        }
+
+                        if (cell && cell.id !== 'zego-mount') {
+                            cell.classList.add('custom-zego-cell');
+
+                            // 2. Identify the Row wrapper (matches flex w-screen h-screen)
+                            let row = cell.parentElement;
+                            if (row && row.id !== 'zego-mount') {
+                                row.classList.add('custom-zego-row');
+                            }
+                        }
+                    });
+                });
+
+                // Start observing Zego's mount point for any internal DOM changes
+                observer.observe(zegoMount, { childList: true, subtree: true });
             }
 
             function leaveZegoRoom() {
