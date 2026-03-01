@@ -110,8 +110,16 @@
             background: transparent !important;
         }
 
-        /* Target inside Zego's generated layout. Zego uses flex normally for 1-on-1. */
+        /* Target the ZegoRoom wrapper */
         #zego-mount>div>div:first-of-type {
+            width: 100% !important;
+            height: 100% !important;
+            position: relative !important;
+            background: #111820 !important;
+        }
+
+        /* Target the actual Video Container inside ZegoRoom */
+        #zego-mount>div>div:first-of-type>div:first-of-type {
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
@@ -121,7 +129,7 @@
             padding: 16px !important;
             padding-bottom: 90px !important;
             /* Leave bottom space for controls */
-            background: #111820 !important;
+            background: transparent !important;
             align-items: stretch !important;
             justify-content: center !important;
             /* Center the split videos */
@@ -129,7 +137,7 @@
         }
 
         /* Target the individual video cells */
-        #zego-mount>div>div:first-of-type>div {
+        #zego-mount>div>div:first-of-type>div:first-of-type>div {
             flex: 1 1 50% !important;
             max-width: 50% !important;
             /* Lock bounds to strictly 50% width */
@@ -269,14 +277,14 @@
             }
 
             /* Stack Videos Vertically */
-            #zego-mount>div>div:first-of-type {
+            #zego-mount>div>div:first-of-type>div:first-of-type {
                 flex-direction: column !important;
                 padding: 12px !important;
                 /* Leave some space for Zego floating toolbar at bottom */
                 padding-bottom: 70px !important;
             }
 
-            #zego-mount>div>div:first-of-type>div {
+            #zego-mount>div>div:first-of-type>div:first-of-type>div {
                 flex: 1 1 50% !important;
                 max-width: 100% !important;
                 /* Take full width on mobile */
