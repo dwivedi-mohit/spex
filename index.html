@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Anonymous Chat Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d7ff2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .mesh-gradient {
+            background-color: #101922;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(13, 127, 242, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(13, 127, 242, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display selection:bg-primary selection:text-white">
+    <nav class="w-full px-8 py-6 flex justify-between items-center border-b border-slate-200 dark:border-white/10">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                <span class="material-icons text-white text-2xl">chat_bubble</span>
+            </div>
+            <span class="text-xl font-extrabold tracking-tight">SpeX</span>
+        </div>
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+            <a class="hover:text-primary transition-colors" href="#">How it works</a>
+            <a class="hover:text-primary transition-colors" href="#">Safety</a>
+        </div>
+    </nav>
+    <main class="flex-grow flex flex-col items-center justify-center px-4 relative overflow-hidden mesh-gradient">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 blur-[120px] rounded-full -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/10 blur-[150px] rounded-full -z-10"></div>
+        <div class="max-w-3xl w-full text-center space-y-12 py-12">
+            <div class="space-y-4">
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
+                    Talk to <span class="text-primary">Strangers.</span>
+                </h1>
+                <p class="text-xl text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+                    Connect with millions of people instantly. Share your world, find new friends, or just hang out.
+                </p>
+            </div>
+            <div
+                class="bg-white dark:bg-white/5 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl p-8 shadow-2xl shadow-primary/5">
+                <div class="mb-10 text-left">
+                    <label class="block text-sm font-semibold mb-3 text-slate-600 dark:text-slate-300 ml-1">Add your
+                        interests (optional)</label>
+                    <div
+                        class="flex flex-wrap gap-2 p-3 min-h-[56px] bg-slate-100 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+
+                        <input
+                            class="flex-grow bg-transparent border-none focus:ring-0 text-sm py-1 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                            placeholder="e.g. Coding, Movies, Travel" type="text" />
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button
+                        class="w-full md:w-auto min-w-[280px] group relative flex items-center justify-center gap-3 py-5 px-8 bg-primary text-white font-bold text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/30">
+                        <span class="material-icons">videocam</span>
+                        Start Video Chat
+                    </button>
+                </div>
+                <div
+                    class="mt-8 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium uppercase tracking-widest text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        Users Online
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-1"><span class="material-icons text-sm">security</span> Safe
+                            Space</span>
+                        <span class="flex items-center gap-1"><span class="material-icons text-sm">bolt</span> Zero
+                            Lag</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                    <div class="text-2xl font-bold text-primary">100%</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Anonymous</div>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                    <div class="text-2xl font-bold text-primary">0s</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Wait Time</div>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                    <div class="text-2xl font-bold text-primary">24/7</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Moderation</div>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                    <div class="text-2xl font-bold text-primary">HD</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Quality</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer
+        class="w-full py-8 px-8 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-background-dark/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+                <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                <a class="hover:text-primary transition-colors" href="#">Community Guidelines</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div
+                    class="px-3 py-1 rounded-full border border-red-500/50 text-red-500 text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                    <span class="material-icons text-[14px]">error_outline</span>
+                    18+ Only
+                </div>
+                <div class="flex gap-2">
+                    <a class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all"
+                        href="#">
+                        <i class="material-icons text-sm">language</i>
+                    </a>
+                    <a class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all"
+                        href="#">
+                        <i class="material-icons text-sm">help_outline</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold opacity-50">
+            © 2024 SpeX Chat Platform. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // App Config - REPLACE THESE WITH YOUR ZEGO CLOUD VALUES
+            const APP_ID = 699836020;
+            const SERVER_SECRET = "624d77e6e5f5fd3e7bc6e455f3cf6912";
+
+            // Utility to generate random ID
+            function randomID(len) {
+                var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
+                    maxPos = chars.length,
+                    result = '';
+                len = len || 5;
+                for (var i = 0; i < len; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return result;
+            }
+
+            const startBtn = document.querySelector('button.group');
+            const mainContent = document.querySelector('main');
+            const footer = document.querySelector('footer');
+            const nav = document.querySelector('nav');
+
+            // Set up Video Container
+            const videoContainer = document.createElement('div');
+            videoContainer.id = 'video-container';
+            videoContainer.style.width = '100vw';
+            videoContainer.style.height = '100vh';
+            videoContainer.style.position = 'fixed';
+            videoContainer.style.top = '0';
+            videoContainer.style.left = '0';
+            videoContainer.style.zIndex = '9999';
+            videoContainer.style.backgroundColor = '#101922';
+            videoContainer.style.display = 'none';
+            document.body.appendChild(videoContainer);
+
+            // Set up Waiting Overlay
+            const waitingOverlay = document.createElement('div');
+            waitingOverlay.id = 'waiting-overlay';
+            waitingOverlay.style.position = 'absolute';
+            waitingOverlay.style.top = '0';
+            waitingOverlay.style.left = '0';
+            waitingOverlay.style.width = '100%';
+            waitingOverlay.style.height = '100%';
+            waitingOverlay.style.display = 'none';
+            waitingOverlay.style.flexDirection = 'column';
+            waitingOverlay.style.justifyContent = 'center';
+            waitingOverlay.style.alignItems = 'center';
+            waitingOverlay.style.backgroundColor = 'rgba(16, 25, 34, 0.9)';
+            waitingOverlay.style.color = 'white';
+            waitingOverlay.style.zIndex = '10000';
+            waitingOverlay.innerHTML = `
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mb-4"></div>
+                <h2 class="text-2xl font-bold">Looking for a stranger...</h2>
+                <button id="cancel-btn" class="mt-8 px-6 py-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 transition-all font-semibold">Cancel</button>
+            `;
+            videoContainer.appendChild(waitingOverlay);
+
+            // Set up Controls Overlay (Next Button)
+            const controlsOverlay = document.createElement('div');
+            controlsOverlay.id = 'controls-overlay';
+            controlsOverlay.style.position = 'absolute';
+            controlsOverlay.style.bottom = '40px';
+            controlsOverlay.style.left = '0';
+            controlsOverlay.style.width = '100%';
+            controlsOverlay.style.display = 'none';
+            controlsOverlay.style.justifyContent = 'center';
+            controlsOverlay.style.gap = '20px';
+            controlsOverlay.style.zIndex = '10001';
+            controlsOverlay.style.pointerEvents = 'none'; // Let clicks pass through except on buttons
+            controlsOverlay.innerHTML = `
+                <button id="next-btn" style="pointer-events: auto;" class="px-8 py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition-all font-bold shadow-lg shadow-primary/30 flex items-center gap-2 text-lg">
+                    <span class="material-icons">skip_next</span> Next
+                </button>
+                <button id="stop-btn" style="pointer-events: auto;" class="px-8 py-4 bg-slate-800 text-white rounded-full hover:bg-slate-700 transition-all font-bold shadow-lg flex items-center gap-2 text-lg">
+                    <span class="material-icons">stop</span> Stop
+                </button>
+            `;
+            videoContainer.appendChild(controlsOverlay);
+
+            let zp = null;
+            let socket = null;
+            let currentRoomID = null;
+            const myUserID = randomID(5);
+            const myUserName = "User_" + myUserID;
+
+            // Initialize Socket.io connection on demand
+            function initSocket() {
+                if (socket) return;
+                socket = io();
+
+                socket.on('waiting', (data) => {
+                    console.log(data.message);
+                    showWaiting();
+                });
+
+                socket.on('room_matched', (data) => {
+                    console.log("Matched!", data);
+                    currentRoomID = data.roomID;
+                    joinZegoRoom(currentRoomID);
+                });
+
+                socket.on('partner_left', (data) => {
+                    console.log("Partner left:", data.message);
+                    // Provide a visual cue here if needed, or automatically next
+                    // Let's automatically re-queue after a short delay
+                    setTimeout(() => {
+                        socket.emit('next');
+                    }, 1000);
+                });
+
+                socket.on('rejoin_queue', () => {
+                    leaveZegoRoom();
+                    currentRoomID = null;
+                    socket.emit('join_queue');
+                });
+            }
+
+            function showWaiting() {
+                waitingOverlay.style.display = 'flex';
+                controlsOverlay.style.display = 'none';
+                leaveZegoRoom(); // Ensure any previous room is left
+            }
+
+            function joinZegoRoom(roomID) {
+                waitingOverlay.style.display = 'none';
+                controlsOverlay.style.display = 'flex';
+
+                const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(APP_ID, SERVER_SECRET, roomID, myUserID, myUserName);
+                zp = ZegoUIKitPrebuilt.create(kitToken);
+
+                // Create a dynamic container for zego to mount into
+                let zegoMount = document.getElementById('zego-mount');
+                if (!zegoMount) {
+                    zegoMount = document.createElement('div');
+                    zegoMount.id = 'zego-mount';
+                    zegoMount.style.width = '100%';
+                    zegoMount.style.height = '100%';
+                    videoContainer.insertBefore(zegoMount, waitingOverlay);
+                }
+
+                zp.joinRoom({
+                    container: zegoMount,
+                    sharedLinks: [], // No shared links for anonymous chat
+                    scenario: {
+                        mode: ZegoUIKitPrebuilt.OneONoneCall, // 1-on-1 call
+                    },
+                    showPreJoinView: false, // Skip pre-join to make it fast like Omegle
+                    onLeaveRoom: () => {
+                        handleStop();
+                    }
+                });
+            }
+
+            function leaveZegoRoom() {
+                if (zp) {
+                    zp.destroy();
+                    zp = null;
+                }
+                const zegoMount = document.getElementById('zego-mount');
+                if (zegoMount) {
+                    zegoMount.remove();
+                }
+            }
+
+            function startApp() {
+                if (APP_ID === 0 || SERVER_SECRET === "YOUR_SERVER_SECRET") {
+                    alert("Please configure your ZegoCloud AppID and ServerSecret in the code first!");
+                    console.error("ZegoCloud Credentials missing.");
+                    return;
+                }
+
+                // Hide landing page
+                if (mainContent) mainContent.style.display = 'none';
+                if (footer) footer.style.display = 'none';
+                if (nav) nav.style.display = 'none';
+
+                // Show video container
+                videoContainer.style.display = 'block';
+
+                initSocket();
+                socket.emit('join_queue');
+                showWaiting();
+            }
+
+            function handleStop() {
+                leaveZegoRoom();
+                if (socket) {
+                    socket.disconnect();
+                    socket = null;
+                }
+                videoContainer.style.display = 'none';
+                if (mainContent) mainContent.style.display = 'flex';
+                if (footer) footer.style.display = 'block';
+                if (nav) nav.style.display = 'flex';
+            }
+
+            if (startBtn) {
+                startBtn.addEventListener('click', startApp);
+            }
+
+            document.getElementById('cancel-btn').addEventListener('click', () => {
+                handleStop();
+            });
+
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (socket) {
+                    socket.emit('next');
+                }
+            });
+
+            document.getElementById('stop-btn').addEventListener('click', () => {
+                handleStop();
+            });
+
+            // Interest Chips - Remove (keep original functionality)
+            const chipsContainer = document.querySelector('.flex.flex-wrap.gap-2');
+            if (chipsContainer) {
+                chipsContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('material-icons') && e.target.textContent === 'close') {
+                        const chip = e.target.closest('div');
+                        if (chip && chip.classList.contains('bg-primary/10')) {
+                            chip.remove();
+                        }
+                    }
+                });
+
+                // Interest Input - Add
+                const input = chipsContainer.querySelector('input');
+                if (input) {
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && input.value.trim() !== '') {
+                            const newInterest = input.value.trim();
+                            const chip = document.createElement('div');
+                            chip.className = 'flex items-center gap-1.5 bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-sm font-semibold';
+                            chip.innerHTML = `${newInterest} <span class="material-icons text-xs cursor-pointer">close</span>`;
+
+                            chipsContainer.insertBefore(chip, input);
+                            input.value = '';
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
