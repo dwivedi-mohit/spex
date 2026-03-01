@@ -4,14 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Anonymous Chat Home</title>
+    <title>SpeX — Anonymous Chat</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -22,9 +19,7 @@
                         "background-light": "#f5f7f8",
                         "background-dark": "#101922",
                     },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans"]
-                    },
+                    fontFamily: { "display": ["Plus Jakarta Sans"] },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 },
             },
@@ -44,7 +39,7 @@
                 radial-gradient(at 100% 100%, rgba(13, 127, 242, 0.1) 0px, transparent 50%);
         }
 
-        /* --- Chat UI Overrides for ZegoCloud --- */
+        /* ========== VIDEO CHAT UI ========== */
         #video-container {
             display: none;
             width: 100vw;
@@ -53,244 +48,259 @@
             top: 0;
             left: 0;
             z-index: 9999;
-            background-color: #000;
+            background: #000;
             margin: 0;
             padding: 0;
             overflow: hidden;
         }
 
-
-
-        /* The wrapper holding the videos */
-        #video-wrapper {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Make the Zego mount take full space of wrapper */
-        #zego-mount {
+        /* The flex row that holds the two video panels */
+        #video-grid {
+            display: flex;
+            flex-direction: row;
             width: 100vw;
             height: 100vh;
-            display: flex;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
-        /* 
-           🔥 STRICT OVERRIDES FOR OMEGLE LAYOUT 🔥
-           ZegoCloud forcefully applies arbitrary inline styles.
-           We'll use JS to assign custom classes, and CSS to enforce absolute strict rules.
-        */
-
-        #zego-mount * {
-            max-width: none !important;
-            border-radius: 0 !important;
-            box-sizing: border-box !important;
+        /* Each panel is exactly 50% */
+        .video-panel {
+            flex: 0 0 50vw;
+            width: 50vw;
+            height: 100vh;
+            position: relative;
+            background: #111;
+            overflow: hidden;
         }
 
-        /* Force Zego root wrappers to be exactly 100vw/100vh */
-        #zego-mount>div,
-        #zego-mount>div>div {
-            width: 100vw !important;
-            height: 100vh !important;
-            min-width: 100vw !important;
-            max-width: 100vw !important;
-            transform: none !important;
-            background: #000 !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* The flex container that holds the video cells */
-        .custom-zego-row,
-        #zego-mount div[style*="display: flex"][style*="flex-direction: row"],
-        #zego-mount div[style*="display:flex"][style*="flex-direction:row"] {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            min-width: 100vw !important;
-            max-width: 100vw !important;
-            justify-content: flex-start !important;
-            /* CRITICAL: Kills Zego's centering */
-            align-items: stretch !important;
-            gap: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #000 !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            transform: none !important;
-        }
-
-        /* The individual video cells */
-        .custom-zego-cell {
-            flex: 0 0 50vw !important;
-            width: 50vw !important;
-            max-width: 50vw !important;
-            height: 100vh !important;
-            position: relative !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: none !important;
-            background: #000 !important;
-            overflow: hidden !important;
-        }
-
-        /* Make actual videos fit correctly inside without stretching */
-        #zego-mount video {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Show and beautifully position Zego's default floating toolbars */
-        .ZegoRoomBottomBar {
-            display: flex !important;
-            position: absolute !important;
-            left: 50% !important;
-            bottom: 24px !important;
-            transform: translateX(-50%) !important;
-            background: rgba(16, 25, 34, 0.8) !important;
-            backdrop-filter: blur(16px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 100px !important;
-            padding: 8px 16px !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-            z-index: 50 !important;
-            width: auto !important;
-            min-width: 0 !important;
-        }
-
-        .ZegoRoomBottomBar>div {
-            margin: 0 8px !important;
-        }
-
-        /* Wait overlay styling */
-        #waiting-overlay {
+        .video-panel video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+        }
+
+        /* Name label at bottom of each panel */
+        .video-label {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
+
+        /* Camera-off avatar placeholder */
+        .cam-off-placeholder {
+            display: none;
+            position: absolute;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #1a1f2b;
+            color: #fff;
+            z-index: 4;
+        }
+
+        .cam-off-placeholder .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #2d3748;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #90cdf4;
+            margin-bottom: 12px;
+        }
+
+        /* Waiting Overlay */
+        #waiting-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10010;
+            background: rgba(10, 15, 25, 0.95);
+            backdrop-filter: blur(12px);
             display: none;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            background: rgba(11, 17, 23, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 10002;
-            color: white;
+            justify-content: center;
+            color: #fff;
         }
 
-        .btn-control {
-            width: 72px;
-            height: 72px;
+        /* Bottom control bar */
+        #control-bar {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10005;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 22, 33, 0.88);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            padding: 8px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .ctrl-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.15s;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.08);
+        }
+
+        .ctrl-btn.active {
+            background: rgba(239, 68, 68, 0.25);
+            color: #ef4444;
+        }
+
+        .ctrl-btn.end-call {
+            background: #ef4444;
+            width: 52px;
+            height: 52px;
+        }
+
+        .ctrl-btn.end-call:hover {
+            background: #dc2626;
+        }
+
+        /* Divider line in control bar */
+        .ctrl-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: 0 4px;
+        }
+
+        /* Next/Stop floating buttons — FIXED, NOT in any video grid */
+        #side-controls {
+            position: fixed;
+            left: 20px;
+            bottom: 110px;
+            z-index: 10005;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .side-btn {
+            width: 68px;
+            height: 68px;
             border-radius: 20px;
+            border: none;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            color: white;
+            justify-content: center;
+            color: #fff;
             font-weight: 700;
-            font-size: 12px;
-            gap: 4px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
+            font-size: 11px;
+            gap: 3px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .btn-control .material-icons {
-            font-size: 28px;
+        .side-btn:hover {
+            transform: scale(1.07);
         }
 
-        .btn-control:hover {
-            transform: translateY(-2px) scale(1.05);
-        }
-
-        .btn-control:active {
+        .side-btn:active {
             transform: scale(0.95);
         }
 
+        .side-btn .material-icons {
+            font-size: 26px;
+        }
+
         .btn-next {
-            background: #0d7ff2;
-            box-shadow: 0 10px 25px -5px rgba(13, 127, 242, 0.5);
+            background: #22c55e;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.45);
         }
 
         .btn-next:hover {
-            background: #0b6dd1;
+            background: #16a34a;
         }
 
         .btn-stop {
             background: #ef4444;
-            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
         }
 
         .btn-stop:hover {
             background: #dc2626;
         }
 
-        /* Responsive Design */
+        /* Mic muted indicator */
+        .muted-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(239, 68, 68, 0.85);
+            color: #fff;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        /* Responsive: mobile stacks videos */
         @media (max-width: 768px) {
-            #controls-sidebar {
-                /* Keep absolute overlay, just adjust position/size */
-                left: 16px;
-                bottom: 80px;
-                /* Above control bar */
+            #video-grid {
                 flex-direction: column;
-                width: auto;
-                height: auto;
-                background: transparent;
-                border: none;
-                padding: 0;
             }
 
-            .btn-control {
-                width: 60px;
-                height: 60px;
-                padding: 0;
+            .video-panel {
+                flex: 0 0 50vh;
+                width: 100vw;
+                height: 50vh;
+            }
+
+            #side-controls {
+                left: 12px;
+                bottom: 88px;
+                gap: 8px;
+            }
+
+            .side-btn {
+                width: 56px;
+                height: 56px;
                 font-size: 10px;
-            }
-
-            .btn-control .material-icons {
-                font-size: 24px;
-            }
-
-            /* Stack Videos Vertically on Mobile */
-            .custom-zego-row {
-                flex-direction: column !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                max-width: 100vw !important;
-            }
-
-            .custom-zego-cell {
-                flex: 0 0 50vh !important;
-                width: 100vw !important;
-                max-width: 100vw !important;
-                height: 50vh !important;
-                max-height: 50vh !important;
-            }
-
-            /* Adjust Zego floating toolbar slightly for mobile */
-            .ZegoRoomBottomBar {
-                bottom: 12px !important;
-                padding: 4px 12px !important;
-                transform: translateX(-50%) scale(0.9) !important;
+                border-radius: 16px;
             }
         }
     </style>
@@ -298,6 +308,8 @@
 
 <body
     class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display selection:bg-primary selection:text-white">
+
+    <!-- ===== NAV ===== -->
     <nav class="w-full px-8 py-6 flex justify-between items-center border-b border-slate-200 dark:border-white/10">
         <div class="flex items-center gap-2">
             <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
@@ -310,73 +322,61 @@
             <a class="hover:text-primary transition-colors" href="#">Safety</a>
         </div>
     </nav>
-    <main class="flex-grow flex flex-col items-center justify-center px-4 relative overflow-hidden mesh-gradient">
-        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 blur-[120px] rounded-full -z-10"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/10 blur-[150px] rounded-full -z-10"></div>
-        <div class="max-w-3xl w-full text-center space-y-12 py-12">
-            <div class="space-y-4">
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
-                    Talk to <span class="text-primary">Strangers.</span>
-                </h1>
-                <p class="text-xl text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-                    Connect with millions of people instantly. Share your world, find new friends, or just hang out.
-                </p>
-            </div>
-            <div
-                class="bg-white dark:bg-white/5 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl p-8 shadow-2xl shadow-primary/5">
-                <div class="mb-10 text-left">
-                    <label class="block text-sm font-semibold mb-3 text-slate-600 dark:text-slate-300 ml-1">Add your
-                        interests (optional)</label>
-                    <div
-                        class="flex flex-wrap gap-2 p-3 min-h-[56px] bg-slate-100 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl focus-within:ring-2 focus-within:ring-primary/50 transition-all">
 
-                        <input
-                            class="flex-grow bg-transparent border-none focus:ring-0 text-sm py-1 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                            placeholder="e.g. Coding, Movies, Travel" type="text" />
-                    </div>
-                </div>
-                <div class="flex justify-center">
-                    <button
-                        class="w-full md:w-auto min-w-[280px] group relative flex items-center justify-center gap-3 py-5 px-8 bg-primary text-white font-bold text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/30">
-                        <span class="material-icons">videocam</span>
-                        Start Video Chat
-                    </button>
-                </div>
-                <div
-                    class="mt-8 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium uppercase tracking-widest text-slate-400">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        Users Online
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="flex items-center gap-1"><span class="material-icons text-sm">security</span> Safe
-                            Space</span>
-                        <span class="flex items-center gap-1"><span class="material-icons text-sm">bolt</span> Zero
-                            Lag</span>
-                    </div>
-                </div>
+    <!-- ===== HERO / LANDING ===== -->
+    <main id="main-content"
+        class="flex-grow flex flex-col items-center justify-center px-4 relative overflow-hidden mesh-gradient">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 blur-[120px] rounded-full -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/10 blur-[120px] rounded-full -z-10"></div>
+
+        <div class="text-center max-w-3xl mx-auto">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-semibold mb-8 backdrop-blur-sm">
+                <span class="material-icons text-base">bolt</span>
+                100% Anonymous — No Account Needed
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
-                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
-                    <div class="text-2xl font-bold text-primary">100%</div>
-                    <div class="text-[10px] uppercase font-bold text-slate-500">Anonymous</div>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight leading-none mb-6 text-white">
+                Meet Someone <br /><span class="text-primary">Completely Random</span>
+            </h1>
+            <p class="text-lg text-slate-400 mb-10 max-w-xl mx-auto">
+                Instant, anonymous video chat with strangers worldwide. Press Start and connect in seconds.
+            </p>
+
+            <button id="start-btn"
+                class="group relative inline-flex items-center gap-3 px-10 py-5 bg-primary text-white text-lg font-bold rounded-full shadow-lg shadow-primary/40 hover:bg-primary/90 hover:shadow-primary/60 hover:scale-105 active:scale-95 transition-all duration-200">
+                <span class="material-icons text-2xl">videocam</span>
+                Start Chatting
+                <div
+                    class="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
                 </div>
-                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+            </button>
+
+            <div class="flex items-center justify-center gap-8 mt-12 text-slate-400">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary">10K+</div>
+                    <div class="text-xs uppercase tracking-widest font-semibold">Online Now</div>
+                </div>
+                <div class="w-px h-10 bg-white/10"></div>
+                <div class="text-center">
                     <div class="text-2xl font-bold text-primary">0s</div>
-                    <div class="text-[10px] uppercase font-bold text-slate-500">Wait Time</div>
+                    <div class="text-xs uppercase tracking-widest font-semibold">Wait Time</div>
                 </div>
-                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                <div class="w-px h-10 bg-white/10"></div>
+                <div class="text-center">
                     <div class="text-2xl font-bold text-primary">24/7</div>
-                    <div class="text-[10px] uppercase font-bold text-slate-500">Moderation</div>
+                    <div class="text-xs uppercase tracking-widest font-semibold">Moderation</div>
                 </div>
-                <div class="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5">
+                <div class="w-px h-10 bg-white/10"></div>
+                <div class="text-center">
                     <div class="text-2xl font-bold text-primary">HD</div>
-                    <div class="text-[10px] uppercase font-bold text-slate-500">Quality</div>
+                    <div class="text-xs uppercase tracking-widest font-semibold">Quality</div>
                 </div>
             </div>
         </div>
     </main>
-    <footer
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer"
         class="w-full py-8 px-8 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-background-dark/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
@@ -392,16 +392,6 @@
                     <span class="material-icons text-[14px]">error_outline</span>
                     18+ Only
                 </div>
-                <div class="flex gap-2">
-                    <a class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all"
-                        href="#">
-                        <i class="material-icons text-sm">language</i>
-                    </a>
-                    <a class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all"
-                        href="#">
-                        <i class="material-icons text-sm">help_outline</i>
-                    </a>
-                </div>
             </div>
         </div>
         <div class="mt-6 text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold opacity-50">
@@ -409,272 +399,395 @@
         </div>
     </footer>
 
+    <!-- ===== VIDEO CHAT OVERLAY ===== -->
+    <div id="video-container">
+
+        <!-- 50/50 Video Grid — ALWAYS both panels rendered -->
+        <div id="video-grid">
+            <!-- LOCAL VIDEO panel -->
+            <div class="video-panel" id="local-panel">
+                <video id="local-video" autoplay muted playsinline></video>
+                <!-- camera off placeholder -->
+                <div class="cam-off-placeholder" id="local-cam-off">
+                    <div class="avatar">Y</div>
+                    <span style="font-size:13px;opacity:0.6">Camera Off</span>
+                </div>
+                <div class="muted-badge" id="local-muted-badge">
+                    <span class="material-icons" style="font-size:18px">mic_off</span>
+                </div>
+                <div class="video-label">
+                    <span class="material-icons" style="font-size:15px">mic</span>
+                    You
+                </div>
+            </div>
+
+            <!-- REMOTE VIDEO panel -->
+            <div class="video-panel" id="remote-panel">
+                <video id="remote-video" autoplay playsinline></video>
+                <!-- camera off placeholder -->
+                <div class="cam-off-placeholder" id="remote-cam-off" style="display:flex;">
+                    <div class="avatar">S</div>
+                    <span style="font-size:13px;opacity:0.6">Waiting for stranger...</span>
+                </div>
+                <div class="video-label">
+                    <span class="material-icons" style="font-size:15px">person</span>
+                    Stranger
+                </div>
+            </div>
+        </div>
+
+        <!-- Waiting overlay (shown while in queue) -->
+        <div id="waiting-overlay">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mb-6"></div>
+            <h2 class="text-2xl font-bold mb-2">Looking for a stranger...</h2>
+            <p class="text-slate-400 mb-8">Connecting you to someone random.</p>
+            <button id="cancel-btn"
+                class="px-6 py-2 bg-red-500/20 text-red-400 rounded-full hover:bg-red-500/30 transition font-semibold">Cancel</button>
+        </div>
+
+        <!-- Bottom control bar -->
+        <div id="control-bar">
+            <button id="mic-btn" class="ctrl-btn" title="Toggle Mic">
+                <span class="material-icons" id="mic-icon">mic</span>
+            </button>
+            <button id="cam-btn" class="ctrl-btn" title="Toggle Camera">
+                <span class="material-icons" id="cam-icon">videocam</span>
+            </button>
+            <div class="ctrl-divider"></div>
+            <button id="end-btn" class="ctrl-btn end-call" title="End Call">
+                <span class="material-icons">call_end</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Next / Stop floating buttons — OUTSIDE video grid, purely fixed overlay -->
+    <div id="side-controls">
+        <button id="next-btn" class="side-btn btn-next">
+            <span class="material-icons">skip_next</span>
+            Next
+        </button>
+        <button id="stop-btn" class="side-btn btn-stop">
+            <span class="material-icons">stop</span>
+            Stop
+        </button>
+    </div>
+
+    <!-- Socket.IO -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // App Config - REPLACE THESE WITH YOUR ZEGO CLOUD VALUES
-            const APP_ID = 699836020;
-            const SERVER_SECRET = "624d77e6e5f5fd3e7bc6e455f3cf6912";
+            (() => {
+                // ── DOM refs ──────────────────────────────────────────────────────────
+                const nav = document.querySelector('nav');
+                const mainContent = document.getElementById('main-content');
+                const footer = document.getElementById('footer');
+                const startBtn = document.getElementById('start-btn');
+                const videoContainer = document.getElementById('video-container');
+                const waitingOverlay = document.getElementById('waiting-overlay');
+                const controlBar = document.getElementById('control-bar');
+                const sideControls = document.getElementById('side-controls');
 
-            // Utility to generate random ID
-            function randomID(len) {
-                var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
-                    maxPos = chars.length,
-                    result = '';
-                len = len || 5;
-                for (var i = 0; i < len; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * maxPos));
+                const localVideo = document.getElementById('local-video');
+                const remoteVideo = document.getElementById('remote-video');
+                const localCamOff = document.getElementById('local-cam-off');
+                const remoteCamOff = document.getElementById('remote-cam-off');
+                const localMutedBadge = document.getElementById('local-muted-badge');
+
+                const micBtn = document.getElementById('mic-btn');
+                const micIcon = document.getElementById('mic-icon');
+                const camBtn = document.getElementById('cam-btn');
+                const camIcon = document.getElementById('cam-icon');
+                const endBtn = document.getElementById('end-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const stopBtn = document.getElementById('stop-btn');
+                const cancelBtn = document.getElementById('cancel-btn');
+
+                // ── State ─────────────────────────────────────────────────────────────
+                let socket = null;
+                let localStream = null;
+                let peerConnection = null;
+                let partnerID = null;
+                let isInitiator = false;
+                let micMuted = false;
+                let camOff = false;
+
+                // ── ICE / STUN config ──────────────────────────────────────────────────
+                const RTC_CONFIG = {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' }
+                    ]
+                };
+
+                // ─────────────────────────────────────────────────────────────────────
+                // SHOW / HIDE helpers
+                // ─────────────────────────────────────────────────────────────────────
+                function showLanding() {
+                    nav.style.display = 'flex';
+                    mainContent.style.display = 'flex';
+                    footer.style.display = 'block';
+                    videoContainer.style.display = 'none';
+                    waitingOverlay.style.display = 'none';
+                    controlBar.style.display = 'none';
+                    sideControls.style.display = 'none';
                 }
-                return result;
-            }
 
-            const startBtn = document.querySelector('button.group');
-            const mainContent = document.querySelector('main');
-            const footer = document.querySelector('footer');
-            const nav = document.querySelector('nav');
+                function showVideoUI() {
+                    nav.style.display = 'none';
+                    mainContent.style.display = 'none';
+                    footer.style.display = 'none';
+                    videoContainer.style.display = 'block';
+                    controlBar.style.display = 'flex';
+                    sideControls.style.display = 'flex';
+                }
 
-            // Set up Video Container (Main Layout Wrapper)
-            const videoContainer = document.createElement('div');
-            videoContainer.id = 'video-container';
-            document.body.appendChild(videoContainer);
+                function showWaiting() {
+                    waitingOverlay.style.display = 'flex';
+                    controlBar.style.display = 'none';
+                    sideControls.style.display = 'none';
+                    setRemoteReady(false);
+                }
 
-            // Set up Controls Sidebar using fixed Tailwind classes as requested
-            const controlsSidebar = document.createElement('div');
-            controlsSidebar.id = 'controls-sidebar';
-            controlsSidebar.className = 'fixed left-5 bottom-[100px] z-[50] flex flex-col gap-4';
-            controlsSidebar.style.display = 'none';
-            controlsSidebar.innerHTML = `
-                <button id="next-btn" class="btn-control btn-next">
-                    <span class="material-icons">skip_next</span>
-                    <span>Next</span>
-                </button>
-                <button id="stop-btn" class="btn-control btn-stop">
-                    <span class="material-icons">stop</span>
-                    <span>Stop</span>
-                </button>
-            `;
-            videoContainer.appendChild(controlsSidebar);
+                function hideWaiting() {
+                    waitingOverlay.style.display = 'none';
+                    controlBar.style.display = 'flex';
+                    sideControls.style.display = 'flex';
+                }
 
-            // Set up Video Wrapper (The 50/50 container)
-            const videoWrapper = document.createElement('div');
-            videoWrapper.id = 'video-wrapper';
-            videoContainer.appendChild(videoWrapper);
+                function setRemoteReady(ready) {
+                    remoteCamOff.style.display = ready ? 'none' : 'flex';
+                    remoteCamOff.querySelector('span').textContent = 'Waiting for stranger...';
+                }
 
-            // Set up Waiting Overlay (Goes inside Video Wrapper)
-            const waitingOverlay = document.createElement('div');
-            waitingOverlay.id = 'waiting-overlay';
-            waitingOverlay.innerHTML = `
-                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mb-4"></div>
-                <h2 class="text-2xl font-bold">Looking for a stranger...</h2>
-                <button id="cancel-btn" class="mt-8 px-6 py-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 transition-all font-semibold cursor-pointer">Cancel</button>
-            `;
-            videoWrapper.appendChild(waitingOverlay);
+                // ─────────────────────────────────────────────────────────────────────
+                // LOCAL MEDIA
+                // ─────────────────────────────────────────────────────────────────────
+                async function getLocalMedia() {
+                    try {
+                        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                        localVideo.srcObject = localStream;
+                        localCamOff.style.display = 'none';
+                    } catch (e) {
+                        console.warn('Could not get camera/mic:', e);
+                        // Create empty stream so peer connection still works
+                        localStream = new MediaStream();
+                        localCamOff.style.display = 'flex';
+                    }
+                }
 
-            let zp = null;
-            let socket = null;
-            let currentRoomID = null;
-            const myUserID = randomID(5);
-            const myUserName = "User_" + myUserID;
+                // ─────────────────────────────────────────────────────────────────────
+                // PEER CONNECTION
+                // ─────────────────────────────────────────────────────────────────────
+                function createPeerConnection(targetID) {
+                    closePeerConnection();
 
-            // Initialize Socket.io connection on demand
-            function initSocket() {
-                if (socket) return;
-                socket = io();
+                    peerConnection = new RTCPeerConnection(RTC_CONFIG);
 
-                socket.on('waiting', (data) => {
-                    console.log(data.message);
+                    // 1. Add local tracks BEFORE creating offer (required)
+                    if (localStream) {
+                        localStream.getTracks().forEach(track => {
+                            peerConnection.addTrack(track, localStream);
+                        });
+                    }
+
+                    // 2. ontrack — assign remote stream (registered before any SDP)
+                    peerConnection.ontrack = (event) => {
+                        console.log('ontrack fired', event.streams);
+                        if (event.streams && event.streams[0]) {
+                            remoteVideo.srcObject = event.streams[0];
+                            setRemoteReady(true);
+                        }
+                    };
+
+                    // 3. ICE candidates
+                    peerConnection.onicecandidate = (event) => {
+                        if (event.candidate) {
+                            socket.emit('ice-candidate', { to: targetID, candidate: event.candidate });
+                        }
+                    };
+
+                    // 4. Connection state monitor
+                    peerConnection.onconnectionstatechange = () => {
+                        console.log('PC state:', peerConnection.connectionState);
+                        if (peerConnection.connectionState === 'disconnected' ||
+                            peerConnection.connectionState === 'failed') {
+                            setRemoteReady(false);
+                        }
+                    };
+
+                    return peerConnection;
+                }
+
+                async function startCallAsInitiator(targetID) {
+                    createPeerConnection(targetID);
+                    const offer = await peerConnection.createOffer();
+                    await peerConnection.setLocalDescription(offer);
+                    socket.emit('offer', { to: targetID, sdp: peerConnection.localDescription });
+                    console.log('Offer sent to', targetID);
+                }
+
+                async function handleOffer(from, sdp) {
+                    createPeerConnection(from);
+                    // setLocalDescription must happen AFTER ontrack is registered (it already is above)
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
+                    const answer = await peerConnection.createAnswer();
+                    await peerConnection.setLocalDescription(answer);
+                    socket.emit('answer', { to: from, sdp: peerConnection.localDescription });
+                    console.log('Answer sent to', from);
+                }
+
+                async function handleAnswer(sdp) {
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
+                }
+
+                async function handleIceCandidate(candidate) {
+                    try {
+                        await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+                    } catch (e) {
+                        console.warn('ICE error:', e);
+                    }
+                }
+
+                function closePeerConnection() {
+                    if (peerConnection) {
+                        peerConnection.ontrack = null;
+                        peerConnection.onicecandidate = null;
+                        peerConnection.onconnectionstatechange = null;
+                        peerConnection.close();
+                        peerConnection = null;
+                    }
+                    remoteVideo.srcObject = null;
+                    setRemoteReady(false);
+                }
+
+                // ─────────────────────────────────────────────────────────────────────
+                // SOCKET
+                // ─────────────────────────────────────────────────────────────────────
+                function initSocket() {
+                    if (socket) return;
+                    socket = io();
+
+                    socket.on('waiting', () => {
+                        console.log('Waiting for partner...');
+                        showWaiting();
+                    });
+
+                    socket.on('matched', async (data) => {
+                        console.log('Matched!', data);
+                        partnerID = data.partnerID;
+                        isInitiator = data.isInitiator;
+                        hideWaiting();
+
+                        if (isInitiator) {
+                            // Small delay to ensure callee is ready
+                            setTimeout(() => startCallAsInitiator(partnerID), 500);
+                        }
+                    });
+
+                    socket.on('offer', async (data) => {
+                        console.log('Received offer from', data.from);
+                        await handleOffer(data.from, data.sdp);
+                    });
+
+                    socket.on('answer', async (data) => {
+                        console.log('Received answer from', data.from);
+                        await handleAnswer(data.sdp);
+                    });
+
+                    socket.on('ice-candidate', async (data) => {
+                        if (peerConnection) await handleIceCandidate(data.candidate);
+                    });
+
+                    socket.on('partner_left', () => {
+                        console.log('Partner disconnected');
+                        closePeerConnection();
+                        setRemoteReady(false);
+                        // Auto-rejoin
+                        setTimeout(() => socket.emit('join_queue'), 800);
+                    });
+
+                    socket.on('rejoin_queue', () => {
+                        closePeerConnection();
+                        socket.emit('join_queue');
+                    });
+                }
+
+                // ─────────────────────────────────────────────────────────────────────
+                // CONTROL BUTTON HANDLERS
+                // ─────────────────────────────────────────────────────────────────────
+
+                // Mic Toggle — only disable track, never stop
+                micBtn.addEventListener('click', () => {
+                    if (!localStream) return;
+                    const audioTrack = localStream.getAudioTracks()[0];
+                    if (!audioTrack) return;
+
+                    micMuted = !micMuted;
+                    audioTrack.enabled = !micMuted;
+
+                    micIcon.textContent = micMuted ? 'mic_off' : 'mic';
+                    micBtn.classList.toggle('active', micMuted);
+                    localMutedBadge.style.display = micMuted ? 'flex' : 'none';
+                });
+
+                // Camera Toggle — only disable track, never stop
+                camBtn.addEventListener('click', () => {
+                    if (!localStream) return;
+                    const videoTrack = localStream.getVideoTracks()[0];
+                    if (!videoTrack) return;
+
+                    camOff = !camOff;
+                    videoTrack.enabled = !camOff; // ✅ track.enabled only, never stop()
+
+                    camIcon.textContent = camOff ? 'videocam_off' : 'videocam';
+                    camBtn.classList.toggle('active', camOff);
+
+                    localCamOff.style.display = camOff ? 'flex' : 'none';
+                });
+
+                // Next
+                nextBtn.addEventListener('click', () => {
+                    closePeerConnection();
+                    if (socket) socket.emit('next');
                     showWaiting();
                 });
 
-                socket.on('room_matched', (data) => {
-                    console.log("Matched!", data);
-                    currentRoomID = data.roomID;
-                    joinZegoRoom(currentRoomID);
-                });
+                // Stop / End
+                function stopChat() {
+                    closePeerConnection();
+                    if (localStream) {
+                        localStream.getTracks().forEach(t => t.stop());
+                        localStream = null;
+                    }
+                    if (socket) { socket.disconnect(); socket = null; }
+                    localVideo.srcObject = null;
+                    // Reset toggle state
+                    micMuted = false; camOff = false;
+                    micIcon.textContent = 'mic';
+                    camIcon.textContent = 'videocam';
+                    micBtn.classList.remove('active');
+                    camBtn.classList.remove('active');
+                    localCamOff.style.display = 'none';
+                    localMutedBadge.style.display = 'none';
+                    showLanding();
+                }
 
-                socket.on('partner_left', (data) => {
-                    console.log("Partner left:", data.message);
-                    // Automatically re-queue after a short delay
-                    setTimeout(() => {
-                        socket.emit('next');
-                    }, 1000);
-                });
+                stopBtn.addEventListener('click', stopChat);
+                endBtn.addEventListener('click', stopChat);
+                cancelBtn.addEventListener('click', stopChat);
 
-                socket.on('rejoin_queue', () => {
-                    leaveZegoRoom();
-                    currentRoomID = null;
+                // ─────────────────────────────────────────────────────────────────────
+                // START
+                // ─────────────────────────────────────────────────────────────────────
+                startBtn.addEventListener('click', async () => {
+                    showVideoUI();
+                    showWaiting();
+                    await getLocalMedia();
+                    initSocket();
                     socket.emit('join_queue');
                 });
-            }
 
-            function showWaiting() {
-                videoContainer.style.display = 'block';
-                controlsSidebar.style.display = 'none'; // Hide sidebar while waiting
-                waitingOverlay.style.display = 'flex';
-                leaveZegoRoom(); // Ensure any previous room is left
-            }
-
-            function joinZegoRoom(roomID) {
-                waitingOverlay.style.display = 'none';
-                controlsSidebar.style.display = 'flex'; // Show controls side panel
-
-                const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(APP_ID, SERVER_SECRET, roomID, myUserID, myUserName);
-                zp = ZegoUIKitPrebuilt.create(kitToken);
-
-                // Create a dynamic container for zego to mount into
-                let zegoMount = document.getElementById('zego-mount');
-                if (!zegoMount) {
-                    zegoMount = document.createElement('div');
-                    zegoMount.id = 'zego-mount';
-                    videoWrapper.insertBefore(zegoMount, waitingOverlay);
-                }
-
-                zp.joinRoom({
-                    container: zegoMount,
-                    sharedLinks: [], // No shared links for anonymous chat
-                    scenario: {
-                        mode: ZegoUIKitPrebuilt.OneONoneCall, // 1-on-1 call
-                    },
-                    showPreJoinView: false, // Skip pre-join
-                    onLeaveRoom: () => {
-                        handleStop();
-                    },
-                    // We can also tweak layout mode config dynamically if needed, 
-                    // though CSS overrides above are stronger
-                    layout: "Grid"
-                });
-
-                // 🔥 THE BULLETPROOF FIX: JS MutationObserver to enforce Omegle layout 🔥
-                // ZegoCloud's internal React engine constantly applies inline constraints like max-width.
-                // We use an observer to catch when the videos render, and force our custom constraints.
-                const observer = new MutationObserver(() => {
-                    const zContainer = document.getElementById('zego-mount');
-                    if (!zContainer) return;
-
-                    const videos = zContainer.querySelectorAll('video');
-                    videos.forEach(video => {
-                        // Nuke any inherited inline styles on the video itself
-                        video.style.setProperty('object-fit', 'cover', 'important');
-                        video.style.setProperty('width', '100%', 'important');
-                        video.style.setProperty('height', '100%', 'important');
-                        video.style.setProperty('position', 'absolute', 'important');
-                        video.style.setProperty('top', '0', 'important');
-                        video.style.setProperty('left', '0', 'important');
-
-                        // 1. Identify the Cell wrapper (matches w-1/2 h-full)
-                        let cell = video.parentElement;
-                        // Sometimes Zego wraps video in an extra div. Traverse up slowly.
-                        while (cell && cell.parentElement && cell.id !== 'zego-mount' && cell.parentElement.children.length === 1) {
-                            cell = cell.parentElement;
-                        }
-
-                        if (cell && cell.id !== 'zego-mount') {
-                            cell.classList.add('custom-zego-cell');
-
-                            // 2. Identify the Row wrapper (matches flex w-screen h-screen)
-                            let row = cell.parentElement;
-                            if (row && row.id !== 'zego-mount') {
-                                row.classList.add('custom-zego-row');
-                            }
-                        }
-                    });
-                });
-
-                // Start observing Zego's mount point for any internal DOM changes
-                observer.observe(zegoMount, { childList: true, subtree: true });
-            }
-
-            function leaveZegoRoom() {
-                if (zp) {
-                    zp.destroy();
-                    zp = null;
-                }
-                const zegoMount = document.getElementById('zego-mount');
-                if (zegoMount) {
-                    zegoMount.remove();
-                }
-            }
-
-            function startApp() {
-                if (APP_ID === 0 || SERVER_SECRET === "YOUR_SERVER_SECRET") {
-                    alert("Please configure your ZegoCloud AppID and ServerSecret in the code first!");
-                    console.error("ZegoCloud Credentials missing.");
-                    return;
-                }
-
-                // Hide landing page
-                if (mainContent) mainContent.style.display = 'none';
-                if (footer) footer.style.display = 'none';
-                if (nav) nav.style.display = 'none';
-
-                // Show video container via JS
-                videoContainer.style.display = 'block';
-
-                initSocket();
-                socket.emit('join_queue');
-                showWaiting();
-            }
-
-            function handleStop() {
-                leaveZegoRoom();
-                if (socket) {
-                    socket.disconnect();
-                    socket = null;
-                }
-                videoContainer.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'flex';
-                if (footer) footer.style.display = 'block';
-                if (nav) nav.style.display = 'flex';
-            }
-
-            if (startBtn) {
-                startBtn.addEventListener('click', startApp);
-            }
-
-            // Notice we bind to the body/document and filter since these elements might be re-created
-            document.body.addEventListener('click', (e) => {
-                const target = e.target.closest('button');
-                if (!target) return;
-
-                if (target.id === 'cancel-btn') {
-                    handleStop();
-                } else if (target.id === 'next-btn') {
-                    if (socket) socket.emit('next');
-                } else if (target.id === 'stop-btn') {
-                    handleStop();
-                }
-            });
-
-            // Interest Chips - Remove (keep original functionality)
-            const chipsContainer = document.querySelector('.flex.flex-wrap.gap-2');
-            if (chipsContainer) {
-                chipsContainer.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('material-icons') && e.target.textContent === 'close') {
-                        const chip = e.target.closest('div');
-                        if (chip && chip.classList.contains('bg-primary/10')) {
-                            chip.remove();
-                        }
-                    }
-                });
-
-                // Interest Input - Add
-                const input = chipsContainer.querySelector('input');
-                if (input) {
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' && input.value.trim() !== '') {
-                            const newInterest = input.value.trim();
-                            const chip = document.createElement('div');
-                            chip.className = 'flex items-center gap-1.5 bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-sm font-semibold';
-                            chip.innerHTML = `${newInterest} <span class="material-icons text-xs cursor-pointer">close</span>`;
-
-                            chipsContainer.insertBefore(chip, input);
-                            input.value = '';
-                        }
-                    });
-                }
-            }
-        });
+            })();
     </script>
 </body>
 
