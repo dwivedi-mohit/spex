@@ -119,15 +119,21 @@
             width: 100% !important;
             gap: 16px !important;
             padding: 16px !important;
+            padding-bottom: 90px !important;
+            /* Leave bottom space for controls */
             background: #111820 !important;
             align-items: stretch !important;
+            justify-content: center !important;
+            /* Center the split videos */
+            box-sizing: border-box !important;
         }
 
         /* Target the individual video cells */
         #zego-mount>div>div:first-of-type>div {
             flex: 1 1 50% !important;
+            max-width: 50% !important;
+            /* Lock bounds to strictly 50% width */
             height: 100% !important;
-            width: 100% !important;
             position: relative !important;
             border-radius: 16px !important;
             overflow: hidden !important;
@@ -135,9 +141,32 @@
             background: #000 !important;
         }
 
-        /* Hide Zego's default floating toolbars if any show up */
+        /* Make actual videos fit correctly inside without stretching */
+        #zego-mount video {
+            object-fit: cover !important;
+            /* Fill out the box instead of black bars */
+        }
+
+        /* Show and beautifully position Zego's default floating toolbars */
         .ZegoRoomBottomBar {
-            display: none !important;
+            display: flex !important;
+            position: absolute !important;
+            left: 50% !important;
+            bottom: 24px !important;
+            transform: translateX(-50%) !important;
+            background: rgba(16, 25, 34, 0.8) !important;
+            backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 100px !important;
+            padding: 8px 16px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+            z-index: 50 !important;
+            width: auto !important;
+            min-width: 0 !important;
+        }
+
+        .ZegoRoomBottomBar>div {
+            margin: 0 8px !important;
         }
 
         /* Wait overlay styling */
@@ -239,11 +268,27 @@
                 padding: 12px;
             }
 
-            /* Change Zego stack to vertical on mobile */
+            /* Stack Videos Vertically */
             #zego-mount>div>div:first-of-type {
                 flex-direction: column !important;
-                padding: 8px !important;
-                gap: 8px !important;
+                padding: 12px !important;
+                /* Leave some space for Zego floating toolbar at bottom */
+                padding-bottom: 70px !important;
+            }
+
+            #zego-mount>div>div:first-of-type>div {
+                flex: 1 1 50% !important;
+                max-width: 100% !important;
+                /* Take full width on mobile */
+                max-height: 50% !important;
+                /* split the height */
+            }
+
+            /* Adjust Zego floating toolbar slightly for mobile */
+            .ZegoRoomBottomBar {
+                bottom: 12px !important;
+                padding: 4px 12px !important;
+                transform: translateX(-50%) scale(0.9) !important;
             }
         }
     </style>
