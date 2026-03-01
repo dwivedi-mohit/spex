@@ -14,11 +14,7 @@
             darkMode: "class",
             theme: {
                 extend: {
-                    colors: {
-                        "primary": "#0d7ff2",
-                        "background-light": "#f5f7f8",
-                        "background-dark": "#101922",
-                    },
+                    colors: { "primary": "#0d7ff2", "background-light": "#f5f7f8", "background-dark": "#101922" },
                     fontFamily: { "display": ["Plus Jakarta Sans"] },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 },
@@ -39,7 +35,7 @@
                 radial-gradient(at 100% 100%, rgba(13, 127, 242, 0.1) 0px, transparent 50%);
         }
 
-        /* ========== VIDEO CHAT UI ========== */
+        /* ===== CHAT OVERLAY ===== */
         #video-container {
             display: none;
             width: 100vw;
@@ -49,12 +45,10 @@
             left: 0;
             z-index: 9999;
             background: #000;
-            margin: 0;
-            padding: 0;
             overflow: hidden;
         }
 
-        /* The flex row that holds the two video panels */
+        /* 50/50 flex row — always both panels, never conditional */
         #video-grid {
             display: flex;
             flex-direction: row;
@@ -65,7 +59,6 @@
             overflow: hidden;
         }
 
-        /* Each panel is exactly 50% */
         .video-panel {
             flex: 0 0 50vw;
             width: 50vw;
@@ -85,7 +78,6 @@
             left: 0;
         }
 
-        /* Name label at bottom of each panel */
         .video-label {
             position: absolute;
             bottom: 16px;
@@ -103,7 +95,6 @@
             z-index: 5;
         }
 
-        /* Camera-off avatar placeholder */
         .cam-off-placeholder {
             display: none;
             position: absolute;
@@ -128,6 +119,21 @@
             font-weight: bold;
             color: #90cdf4;
             margin-bottom: 12px;
+        }
+
+        .muted-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(239, 68, 68, 0.85);
+            color: #fff;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
         }
 
         /* Waiting Overlay */
@@ -196,7 +202,6 @@
             background: #dc2626;
         }
 
-        /* Divider line in control bar */
         .ctrl-divider {
             width: 1px;
             height: 28px;
@@ -204,7 +209,7 @@
             margin: 0 4px;
         }
 
-        /* Next/Stop floating buttons — FIXED, NOT in any video grid */
+        /* Next/Stop — FIXED, not inside video-grid */
         #side-controls {
             position: fixed;
             left: 20px;
@@ -262,23 +267,6 @@
             background: #dc2626;
         }
 
-        /* Mic muted indicator */
-        .muted-badge {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: rgba(239, 68, 68, 0.85);
-            color: #fff;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5;
-        }
-
-        /* Responsive: mobile stacks videos */
         @media (max-width: 768px) {
             #video-grid {
                 flex-direction: column;
@@ -309,7 +297,7 @@
 <body
     class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display selection:bg-primary selection:text-white">
 
-    <!-- ===== NAV ===== -->
+    <!-- NAV -->
     <nav class="w-full px-8 py-6 flex justify-between items-center border-b border-slate-200 dark:border-white/10">
         <div class="flex items-center gap-2">
             <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
@@ -323,12 +311,11 @@
         </div>
     </nav>
 
-    <!-- ===== HERO / LANDING ===== -->
+    <!-- LANDING -->
     <main id="main-content"
         class="flex-grow flex flex-col items-center justify-center px-4 relative overflow-hidden mesh-gradient">
         <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 blur-[120px] rounded-full -z-10"></div>
         <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/10 blur-[120px] rounded-full -z-10"></div>
-
         <div class="text-center max-w-3xl mx-auto">
             <div
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-semibold mb-8 backdrop-blur-sm">
@@ -339,27 +326,17 @@
                 Meet Someone <br /><span class="text-primary">Completely Random</span>
             </h1>
             <p class="text-lg text-slate-400 mb-10 max-w-xl mx-auto">
-                Instant, anonymous video chat with strangers worldwide. Press Start and connect in seconds.
+                Instant, anonymous video chat with strangers worldwide.
             </p>
-
             <button id="start-btn"
                 class="group relative inline-flex items-center gap-3 px-10 py-5 bg-primary text-white text-lg font-bold rounded-full shadow-lg shadow-primary/40 hover:bg-primary/90 hover:shadow-primary/60 hover:scale-105 active:scale-95 transition-all duration-200">
                 <span class="material-icons text-2xl">videocam</span>
                 Start Chatting
-                <div
-                    class="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                </div>
             </button>
-
             <div class="flex items-center justify-center gap-8 mt-12 text-slate-400">
                 <div class="text-center">
                     <div class="text-2xl font-bold text-primary">10K+</div>
                     <div class="text-xs uppercase tracking-widest font-semibold">Online Now</div>
-                </div>
-                <div class="w-px h-10 bg-white/10"></div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-primary">0s</div>
-                    <div class="text-xs uppercase tracking-widest font-semibold">Wait Time</div>
                 </div>
                 <div class="w-px h-10 bg-white/10"></div>
                 <div class="text-center">
@@ -375,7 +352,7 @@
         </div>
     </main>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- FOOTER -->
     <footer id="footer"
         class="w-full py-8 px-8 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-background-dark/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
@@ -383,15 +360,10 @@
                 <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
                 <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20"></span>
                 <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
-                <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20"></span>
-                <a class="hover:text-primary transition-colors" href="#">Community Guidelines</a>
             </div>
-            <div class="flex items-center gap-4">
-                <div
-                    class="px-3 py-1 rounded-full border border-red-500/50 text-red-500 text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
-                    <span class="material-icons text-[14px]">error_outline</span>
-                    18+ Only
-                </div>
+            <div
+                class="px-3 py-1 rounded-full border border-red-500/50 text-red-500 text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                <span class="material-icons text-[14px]">error_outline</span>18+ Only
             </div>
         </div>
         <div class="mt-6 text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold opacity-50">
@@ -399,15 +371,13 @@
         </div>
     </footer>
 
-    <!-- ===== VIDEO CHAT OVERLAY ===== -->
+    <!-- VIDEO CHAT OVERLAY -->
     <div id="video-container">
-
-        <!-- 50/50 Video Grid — ALWAYS both panels rendered -->
+        <!-- 50/50 grid — BOTH panels always in DOM, never removed -->
         <div id="video-grid">
-            <!-- LOCAL VIDEO panel -->
+            <!-- LOCAL -->
             <div class="video-panel" id="local-panel">
                 <video id="local-video" autoplay muted playsinline></video>
-                <!-- camera off placeholder -->
                 <div class="cam-off-placeholder" id="local-cam-off">
                     <div class="avatar">Y</div>
                     <span style="font-size:13px;opacity:0.6">Camera Off</span>
@@ -416,27 +386,24 @@
                     <span class="material-icons" style="font-size:18px">mic_off</span>
                 </div>
                 <div class="video-label">
-                    <span class="material-icons" style="font-size:15px">mic</span>
-                    You
+                    <span class="material-icons" style="font-size:15px">mic</span>You
                 </div>
             </div>
 
-            <!-- REMOTE VIDEO panel -->
+            <!-- REMOTE -->
             <div class="video-panel" id="remote-panel">
                 <video id="remote-video" autoplay playsinline></video>
-                <!-- camera off placeholder -->
-                <div class="cam-off-placeholder" id="remote-cam-off" style="display:flex;">
+                <div class="cam-off-placeholder" id="remote-cam-off" style="display:flex">
                     <div class="avatar">S</div>
                     <span style="font-size:13px;opacity:0.6">Waiting for stranger...</span>
                 </div>
                 <div class="video-label">
-                    <span class="material-icons" style="font-size:15px">person</span>
-                    Stranger
+                    <span class="material-icons" style="font-size:15px">person</span>Stranger
                 </div>
             </div>
         </div>
 
-        <!-- Waiting overlay (shown while in queue) -->
+        <!-- Waiting overlay -->
         <div id="waiting-overlay">
             <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mb-6"></div>
             <h2 class="text-2xl font-bold mb-2">Looking for a stranger...</h2>
@@ -447,37 +414,30 @@
 
         <!-- Bottom control bar -->
         <div id="control-bar">
-            <button id="mic-btn" class="ctrl-btn" title="Toggle Mic">
-                <span class="material-icons" id="mic-icon">mic</span>
-            </button>
-            <button id="cam-btn" class="ctrl-btn" title="Toggle Camera">
-                <span class="material-icons" id="cam-icon">videocam</span>
-            </button>
+            <button id="mic-btn" class="ctrl-btn" title="Mic"><span class="material-icons"
+                    id="mic-icon">mic</span></button>
+            <button id="cam-btn" class="ctrl-btn" title="Camera"><span class="material-icons"
+                    id="cam-icon">videocam</span></button>
             <div class="ctrl-divider"></div>
-            <button id="end-btn" class="ctrl-btn end-call" title="End Call">
-                <span class="material-icons">call_end</span>
-            </button>
+            <button id="end-btn" class="ctrl-btn end-call" title="End"><span
+                    class="material-icons">call_end</span></button>
         </div>
     </div>
 
-    <!-- Next / Stop floating buttons — OUTSIDE video grid, purely fixed overlay -->
+    <!-- Next/Stop — OUTSIDE video-container, purely fixed positioned -->
     <div id="side-controls">
         <button id="next-btn" class="side-btn btn-next">
-            <span class="material-icons">skip_next</span>
-            Next
+            <span class="material-icons">skip_next</span>Next
         </button>
         <button id="stop-btn" class="side-btn btn-stop">
-            <span class="material-icons">stop</span>
-            Stop
+            <span class="material-icons">stop</span>Stop
         </button>
     </div>
 
-    <!-- Socket.IO -->
     <script src="/socket.io/socket.io.js"></script>
-
     <script>
             (() => {
-                // ── DOM refs ──────────────────────────────────────────────────────────
+                // ── DOM ──────────────────────────────────────────────────────────────
                 const nav = document.querySelector('nav');
                 const mainContent = document.getElementById('main-content');
                 const footer = document.getElementById('footer');
@@ -486,13 +446,11 @@
                 const waitingOverlay = document.getElementById('waiting-overlay');
                 const controlBar = document.getElementById('control-bar');
                 const sideControls = document.getElementById('side-controls');
-
                 const localVideo = document.getElementById('local-video');
                 const remoteVideo = document.getElementById('remote-video');
                 const localCamOff = document.getElementById('local-cam-off');
                 const remoteCamOff = document.getElementById('remote-cam-off');
                 const localMutedBadge = document.getElementById('local-muted-badge');
-
                 const micBtn = document.getElementById('mic-btn');
                 const micIcon = document.getElementById('mic-icon');
                 const camBtn = document.getElementById('cam-btn');
@@ -505,23 +463,25 @@
                 // ── State ─────────────────────────────────────────────────────────────
                 let socket = null;
                 let localStream = null;
-                let peerConnection = null;
+                let pc = null;
                 let partnerID = null;
-                let isInitiator = false;
                 let micMuted = false;
                 let camOff = false;
 
-                // ── ICE / STUN config ──────────────────────────────────────────────────
+                // KEY FIX: ICE candidate queue — hold candidates until remote desc is set
+                let iceCandidateQueue = [];
+                let remoteDescSet = false;
+
                 const RTC_CONFIG = {
                     iceServers: [
                         { urls: 'stun:stun.l.google.com:19302' },
-                        { urls: 'stun:stun1.l.google.com:19302' }
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun3.l.google.com:19302' },
                     ]
                 };
 
-                // ─────────────────────────────────────────────────────────────────────
-                // SHOW / HIDE helpers
-                // ─────────────────────────────────────────────────────────────────────
+                // ── UI Helpers ────────────────────────────────────────────────────────
                 function showLanding() {
                     nav.style.display = 'flex';
                     mainContent.style.display = 'flex';
@@ -537,15 +497,15 @@
                     mainContent.style.display = 'none';
                     footer.style.display = 'none';
                     videoContainer.style.display = 'block';
-                    controlBar.style.display = 'flex';
-                    sideControls.style.display = 'flex';
                 }
 
                 function showWaiting() {
                     waitingOverlay.style.display = 'flex';
                     controlBar.style.display = 'none';
                     sideControls.style.display = 'none';
-                    setRemoteReady(false);
+                    remoteVideo.srcObject = null;
+                    remoteCamOff.style.display = 'flex';
+                    remoteCamOff.querySelector('span').textContent = 'Waiting for stranger...';
                 }
 
                 function hideWaiting() {
@@ -554,221 +514,235 @@
                     sideControls.style.display = 'flex';
                 }
 
-                function setRemoteReady(ready) {
-                    remoteCamOff.style.display = ready ? 'none' : 'flex';
-                    remoteCamOff.querySelector('span').textContent = 'Waiting for stranger...';
+                function setRemoteConnected() {
+                    remoteCamOff.style.display = 'none';
                 }
 
-                // ─────────────────────────────────────────────────────────────────────
-                // LOCAL MEDIA
-                // ─────────────────────────────────────────────────────────────────────
+                // ── Local Media ───────────────────────────────────────────────────────
                 async function getLocalMedia() {
                     try {
                         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                         localVideo.srcObject = localStream;
                         localCamOff.style.display = 'none';
+                        console.log('[Media] Got camera + mic');
                     } catch (e) {
-                        console.warn('Could not get camera/mic:', e);
-                        // Create empty stream so peer connection still works
+                        console.warn('[Media] Failed:', e.message, '— using empty stream');
                         localStream = new MediaStream();
                         localCamOff.style.display = 'flex';
                     }
                 }
 
-                // ─────────────────────────────────────────────────────────────────────
-                // PEER CONNECTION
-                // ─────────────────────────────────────────────────────────────────────
-                function createPeerConnection(targetID) {
-                    closePeerConnection();
+                // ── Peer Connection ───────────────────────────────────────────────────
+                function createPC(targetID) {
+                    closePC();
+                    iceCandidateQueue = [];
+                    remoteDescSet = false;
+                    console.log('[PC] Creating peer connection for:', targetID);
 
-                    peerConnection = new RTCPeerConnection(RTC_CONFIG);
+                    pc = new RTCPeerConnection(RTC_CONFIG);
 
-                    // 1. Add local tracks BEFORE creating offer (required)
+                    // ✅ 1. Add local tracks BEFORE createOffer
                     if (localStream) {
                         localStream.getTracks().forEach(track => {
-                            peerConnection.addTrack(track, localStream);
+                            pc.addTrack(track, localStream);
+                            console.log('[PC] addTrack:', track.kind);
                         });
                     }
 
-                    // 2. ontrack — assign remote stream (registered before any SDP)
-                    peerConnection.ontrack = (event) => {
-                        console.log('ontrack fired', event.streams);
+                    // ✅ 2. ontrack registered immediately — before any SDP
+                    pc.ontrack = (event) => {
+                        console.log('[PC] ontrack! streams:', event.streams.length, 'track:', event.track.kind);
                         if (event.streams && event.streams[0]) {
                             remoteVideo.srcObject = event.streams[0];
-                            setRemoteReady(true);
+                        } else {
+                            // Fallback: no stream in event, build one from track
+                            const s = new MediaStream([event.track]);
+                            remoteVideo.srcObject = s;
                         }
+                        setRemoteConnected();
                     };
 
-                    // 3. ICE candidates
-                    peerConnection.onicecandidate = (event) => {
+                    // ✅ 3. ICE candidates — send to right partner
+                    pc.onicecandidate = (event) => {
                         if (event.candidate) {
                             socket.emit('ice-candidate', { to: targetID, candidate: event.candidate });
                         }
                     };
 
-                    // 4. Connection state monitor
-                    peerConnection.onconnectionstatechange = () => {
-                        console.log('PC state:', peerConnection.connectionState);
-                        if (peerConnection.connectionState === 'disconnected' ||
-                            peerConnection.connectionState === 'failed') {
-                            setRemoteReady(false);
-                        }
+                    pc.oniceconnectionstatechange = () => {
+                        console.log('[PC] ICE:', pc.iceConnectionState);
                     };
 
-                    return peerConnection;
+                    pc.onconnectionstatechange = () => {
+                        console.log('[PC] Connection:', pc.connectionState);
+                        if (pc.connectionState === 'failed') pc.restartIce();
+                    };
                 }
 
-                async function startCallAsInitiator(targetID) {
-                    createPeerConnection(targetID);
-                    const offer = await peerConnection.createOffer();
-                    await peerConnection.setLocalDescription(offer);
-                    socket.emit('offer', { to: targetID, sdp: peerConnection.localDescription });
-                    console.log('Offer sent to', targetID);
+                // Drain ICE candidates queued before remoteDescription was set
+                async function drainICEQueue() {
+                    console.log('[ICE] Draining queue:', iceCandidateQueue.length, 'candidates');
+                    for (const c of iceCandidateQueue) {
+                        try { await pc.addIceCandidate(new RTCIceCandidate(c)); } catch (e) { console.warn('[ICE] drain err:', e.message); }
+                    }
+                    iceCandidateQueue = [];
                 }
 
-                async function handleOffer(from, sdp) {
-                    createPeerConnection(from);
-                    // setLocalDescription must happen AFTER ontrack is registered (it already is above)
-                    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-                    const answer = await peerConnection.createAnswer();
-                    await peerConnection.setLocalDescription(answer);
-                    socket.emit('answer', { to: from, sdp: peerConnection.localDescription });
-                    console.log('Answer sent to', from);
-                }
-
-                async function handleAnswer(sdp) {
-                    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-                }
-
-                async function handleIceCandidate(candidate) {
+                // CALLER: create + send offer
+                async function startAsInitiator(targetID) {
+                    console.log('[RTC] Starting as INITIATOR to', targetID);
+                    createPC(targetID);
                     try {
-                        await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-                    } catch (e) {
-                        console.warn('ICE error:', e);
+                        const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
+                        await pc.setLocalDescription(offer);
+                        socket.emit('offer', { to: targetID, sdp: pc.localDescription });
+                        console.log('[RTC] Offer sent');
+                    } catch (e) { console.error('[RTC] Offer error:', e); }
+                }
+
+                // CALLEE: receive offer, send answer
+                async function handleOffer(from, sdp) {
+                    console.log('[RTC] Got offer from', from);
+                    createPC(from);
+                    try {
+                        await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+                        remoteDescSet = true;
+                        await drainICEQueue(); // ✅ apply any queued ICE candidates
+                        const answer = await pc.createAnswer();
+                        await pc.setLocalDescription(answer);
+                        socket.emit('answer', { to: from, sdp: pc.localDescription });
+                        console.log('[RTC] Answer sent');
+                    } catch (e) { console.error('[RTC] Answer error:', e); }
+                }
+
+                // CALLER: receive answer
+                async function handleAnswer(sdp) {
+                    console.log('[RTC] Got answer');
+                    if (!pc) return;
+                    try {
+                        await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+                        remoteDescSet = true;
+                        await drainICEQueue(); // ✅ apply any queued ICE candidates
+                        console.log('[RTC] Remote desc set (caller)');
+                    } catch (e) { console.error('[RTC] Set answer error:', e); }
+                }
+
+                // Handle incoming ICE — QUEUE if remote desc not yet set
+                async function handleICE(candidate) {
+                    if (!pc) return;
+                    if (!remoteDescSet) {
+                        console.log('[ICE] Queued (remote desc not yet set)');
+                        iceCandidateQueue.push(candidate);
+                    } else {
+                        try { await pc.addIceCandidate(new RTCIceCandidate(candidate)); }
+                        catch (e) { console.warn('[ICE] addIceCandidate error:', e.message); }
                     }
                 }
 
-                function closePeerConnection() {
-                    if (peerConnection) {
-                        peerConnection.ontrack = null;
-                        peerConnection.onicecandidate = null;
-                        peerConnection.onconnectionstatechange = null;
-                        peerConnection.close();
-                        peerConnection = null;
+                function closePC() {
+                    if (pc) {
+                        pc.ontrack = null;
+                        pc.onicecandidate = null;
+                        pc.oniceconnectionstatechange = null;
+                        pc.onconnectionstatechange = null;
+                        pc.close();
+                        pc = null;
                     }
+                    remoteDescSet = false;
+                    iceCandidateQueue = [];
                     remoteVideo.srcObject = null;
-                    setRemoteReady(false);
                 }
 
-                // ─────────────────────────────────────────────────────────────────────
-                // SOCKET
-                // ─────────────────────────────────────────────────────────────────────
+                // ── Socket ────────────────────────────────────────────────────────────
                 function initSocket() {
                     if (socket) return;
                     socket = io();
 
+                    socket.on('connect', () => console.log('[Socket] Connected:', socket.id));
+
                     socket.on('waiting', () => {
-                        console.log('Waiting for partner...');
+                        console.log('[Queue] Waiting...');
                         showWaiting();
                     });
 
-                    socket.on('matched', async (data) => {
-                        console.log('Matched!', data);
+                    socket.on('matched', (data) => {
+                        console.log('[Queue] Matched! isInitiator:', data.isInitiator, 'partner:', data.partnerID);
                         partnerID = data.partnerID;
-                        isInitiator = data.isInitiator;
                         hideWaiting();
 
-                        if (isInitiator) {
-                            // Small delay to ensure callee is ready
-                            setTimeout(() => startCallAsInitiator(partnerID), 500);
+                        if (data.isInitiator) {
+                            // Brief delay so callee socket listener is ready
+                            setTimeout(() => startAsInitiator(partnerID), 300);
                         }
+                        // Callee waits for 'offer' event
                     });
 
                     socket.on('offer', async (data) => {
-                        console.log('Received offer from', data.from);
                         await handleOffer(data.from, data.sdp);
                     });
 
                     socket.on('answer', async (data) => {
-                        console.log('Received answer from', data.from);
                         await handleAnswer(data.sdp);
                     });
 
                     socket.on('ice-candidate', async (data) => {
-                        if (peerConnection) await handleIceCandidate(data.candidate);
+                        await handleICE(data.candidate);
                     });
 
                     socket.on('partner_left', () => {
-                        console.log('Partner disconnected');
-                        closePeerConnection();
-                        setRemoteReady(false);
-                        // Auto-rejoin
-                        setTimeout(() => socket.emit('join_queue'), 800);
+                        console.log('[Queue] Partner left — re-queuing...');
+                        closePC();
+                        showWaiting();
+                        setTimeout(() => { if (socket) socket.emit('join_queue'); }, 700);
                     });
 
                     socket.on('rejoin_queue', () => {
-                        closePeerConnection();
-                        socket.emit('join_queue');
+                        closePC();
+                        showWaiting();
+                        if (socket) socket.emit('join_queue');
                     });
+
+                    socket.on('disconnect', (reason) => console.warn('[Socket] Disconnected:', reason));
                 }
 
-                // ─────────────────────────────────────────────────────────────────────
-                // CONTROL BUTTON HANDLERS
-                // ─────────────────────────────────────────────────────────────────────
-
-                // Mic Toggle — only disable track, never stop
+                // ── Controls ──────────────────────────────────────────────────────────
                 micBtn.addEventListener('click', () => {
                     if (!localStream) return;
-                    const audioTrack = localStream.getAudioTracks()[0];
-                    if (!audioTrack) return;
-
+                    const t = localStream.getAudioTracks()[0];
+                    if (!t) return;
                     micMuted = !micMuted;
-                    audioTrack.enabled = !micMuted;
-
+                    t.enabled = !micMuted; // ✅ track.enabled only, never .stop()
                     micIcon.textContent = micMuted ? 'mic_off' : 'mic';
                     micBtn.classList.toggle('active', micMuted);
                     localMutedBadge.style.display = micMuted ? 'flex' : 'none';
                 });
 
-                // Camera Toggle — only disable track, never stop
                 camBtn.addEventListener('click', () => {
                     if (!localStream) return;
-                    const videoTrack = localStream.getVideoTracks()[0];
-                    if (!videoTrack) return;
-
+                    const t = localStream.getVideoTracks()[0];
+                    if (!t) return;
                     camOff = !camOff;
-                    videoTrack.enabled = !camOff; // ✅ track.enabled only, never stop()
-
+                    t.enabled = !camOff; // ✅ track.enabled only, never .stop()
                     camIcon.textContent = camOff ? 'videocam_off' : 'videocam';
                     camBtn.classList.toggle('active', camOff);
-
                     localCamOff.style.display = camOff ? 'flex' : 'none';
                 });
 
-                // Next
                 nextBtn.addEventListener('click', () => {
-                    closePeerConnection();
+                    closePC();
                     if (socket) socket.emit('next');
                     showWaiting();
                 });
 
-                // Stop / End
                 function stopChat() {
-                    closePeerConnection();
-                    if (localStream) {
-                        localStream.getTracks().forEach(t => t.stop());
-                        localStream = null;
-                    }
+                    closePC();
+                    if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
                     if (socket) { socket.disconnect(); socket = null; }
                     localVideo.srcObject = null;
-                    // Reset toggle state
                     micMuted = false; camOff = false;
-                    micIcon.textContent = 'mic';
-                    camIcon.textContent = 'videocam';
-                    micBtn.classList.remove('active');
-                    camBtn.classList.remove('active');
-                    localCamOff.style.display = 'none';
-                    localMutedBadge.style.display = 'none';
+                    micIcon.textContent = 'mic'; camIcon.textContent = 'videocam';
+                    micBtn.classList.remove('active'); camBtn.classList.remove('active');
+                    localCamOff.style.display = 'none'; localMutedBadge.style.display = 'none';
                     showLanding();
                 }
 
@@ -776,9 +750,7 @@
                 endBtn.addEventListener('click', stopChat);
                 cancelBtn.addEventListener('click', stopChat);
 
-                // ─────────────────────────────────────────────────────────────────────
-                // START
-                // ─────────────────────────────────────────────────────────────────────
+                // ── Start ──────────────────────────────────────────────────────────────
                 startBtn.addEventListener('click', async () => {
                     showVideoUI();
                     showWaiting();
