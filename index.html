@@ -570,12 +570,38 @@
                     };
 
                     pc.oniceconnectionstatechange = () => {
-                        console.log('[PC] ICE:', pc.iceConnectionState);
+                        const state = pc.iceConnectionState;
+                        console.log('[PC] ICE:', state);
+                        // ✅ Fallback: show stranger panel when connection is live
+                        // even if they have no camera (ontrack never fires)
+                        if (state === 'connected' || state === 'completed') {
+                            // Hide the "Waiting for stranger..." placeholder
+                            // If no video stream came yet, show camera-off placeholder
+                            if (!remoteVideo.srcObject) {
+                                remoteCamOff.querySelector('span').textContent = 'Camera Off';
+                            }
+                            remoteCamOff.style.display = remoteVideo.srcObject ? 'none' : 'flex';
+                        } else if (state === 'disconnected' || state === 'failed') {
+                            remoteCamOff.style.display = 'flex';
+                            remoteCamOff.querySelector('span').textContent = 'Stranger disconnected...';
+                            if (state === 'failed') pc.restartIce();
+                        }
                     };
 
                     pc.onconnectionstatechange = () => {
-                        console.log('[PC] Connection:', pc.connectionState);
-                        if (pc.connectionState === 'failed') pc.restartIce();
+                        const state = pc.connectionState;
+                        console.log('[PC] Connection:', state);
+                        if (state === 'connected') {
+                            // Ensure remote panel is visible when fully connected
+                            if (!remoteVideo.srcObject) {
+                                remoteCamOff.querySelector('span').textContent = 'Camera Off';
+                                remoteCamOff.style.display = 'flex';
+                            } else {
+                                remoteCamOff.style.display = 'none';
+                            }
+                        } else if (state === 'failed') {
+                            pc.restartIce();
+                        }
                     };
                 }
 
