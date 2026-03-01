@@ -59,17 +59,7 @@
             overflow: hidden;
         }
 
-        /* The floating control panel for Next and Stop */
-        #controls-sidebar {
-            display: none;
-            /* Flex when active */
-            flex-direction: column;
-            gap: 16px;
-            position: absolute;
-            left: 32px;
-            bottom: 32px;
-            z-index: 10001;
-        }
+
 
         /* The wrapper holding the videos */
         #video-wrapper {
@@ -449,9 +439,11 @@
             videoContainer.id = 'video-container';
             document.body.appendChild(videoContainer);
 
-            // Set up Controls Sidebar (Left on Desktop, Bottom on Mobile)
+            // Set up Controls Sidebar using fixed Tailwind classes as requested
             const controlsSidebar = document.createElement('div');
             controlsSidebar.id = 'controls-sidebar';
+            controlsSidebar.className = 'fixed left-5 bottom-[100px] z-[50] flex flex-col gap-4';
+            controlsSidebar.style.display = 'none';
             controlsSidebar.innerHTML = `
                 <button id="next-btn" class="btn-control btn-next">
                     <span class="material-icons">skip_next</span>
@@ -517,7 +509,7 @@
             }
 
             function showWaiting() {
-                videoContainer.style.display = 'flex';
+                videoContainer.style.display = 'block';
                 controlsSidebar.style.display = 'none'; // Hide sidebar while waiting
                 waitingOverlay.style.display = 'flex';
                 leaveZegoRoom(); // Ensure any previous room is left
@@ -617,7 +609,7 @@
                 if (nav) nav.style.display = 'none';
 
                 // Show video container via JS
-                videoContainer.style.display = 'flex';
+                videoContainer.style.display = 'block';
 
                 initSocket();
                 socket.emit('join_queue');
