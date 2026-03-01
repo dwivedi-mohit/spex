@@ -33,6 +33,8 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .mesh-gradient {
@@ -40,6 +42,209 @@
             background-image:
                 radial-gradient(at 0% 0%, rgba(13, 127, 242, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(13, 127, 242, 0.1) 0px, transparent 50%);
+        }
+
+        /* --- Chat UI Overrides for ZegoCloud --- */
+        #video-container {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            background-color: #0b1117;
+            /* Darker background for contrast */
+            /* We will use flexbox to layout sidebar and video area */
+            flex-direction: row;
+        }
+
+        /* The sidebar containing Next and Stop */
+        #controls-sidebar {
+            display: none;
+            /* Flex when active */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            width: 120px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            z-index: 10001;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+
+        /* The wrapper holding the 50/50 split */
+        #video-wrapper {
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+            padding: 24px;
+            box-sizing: border-box;
+            background-image: radial-gradient(at 50% 50%, rgba(13, 127, 242, 0.05) 0px, transparent 100%);
+        }
+
+        /* Make the Zego mount take full space of wrapper */
+        #zego-mount {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 
+           ZegoCloud forcefully applies inline styles and classes. 
+           We use !important to override their internal grid to force our 50/50 split.
+           Usually, Zego uses `.Q9_v_P6Zl1Lq6M4yik1m` or direct flex containers for internal videos.
+        */
+
+        /* Attempt to target Zego's main video container wrapper */
+        #zego-mount>div {
+            width: 100% !important;
+            height: 100% !important;
+            background: transparent !important;
+        }
+
+        /* Target inside Zego's generated layout. Zego uses flex normally for 1-on-1. */
+        #zego-mount>div>div:first-of-type {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            height: 100% !important;
+            width: 100% !important;
+            gap: 16px !important;
+            padding: 16px !important;
+            background: #111820 !important;
+            align-items: stretch !important;
+        }
+
+        /* Target the individual video cells */
+        #zego-mount>div>div:first-of-type>div {
+            flex: 1 1 50% !important;
+            height: 100% !important;
+            width: 100% !important;
+            position: relative !important;
+            border-radius: 16px !important;
+            overflow: hidden !important;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+            background: #000 !important;
+        }
+
+        /* Hide Zego's default floating toolbars if any show up */
+        .ZegoRoomBottomBar {
+            display: none !important;
+        }
+
+        /* Wait overlay styling */
+        #waiting-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(11, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10002;
+            color: white;
+        }
+
+        .btn-control {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            gap: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .btn-control .material-icons {
+            font-size: 28px;
+        }
+
+        .btn-control:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .btn-control:active {
+            transform: scale(0.95);
+        }
+
+        .btn-next {
+            background: #0d7ff2;
+            box-shadow: 0 10px 25px -5px rgba(13, 127, 242, 0.5);
+        }
+
+        .btn-next:hover {
+            background: #0b6dd1;
+        }
+
+        .btn-stop {
+            background: #ef4444;
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-stop:hover {
+            background: #dc2626;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #video-container {
+                flex-direction: column-reverse;
+                /* Controls at bottom, video top */
+            }
+
+            #controls-sidebar {
+                width: 100%;
+                height: 90px;
+                flex-direction: row;
+                /* Horizontal on mobile */
+                border-right: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                justify-content: space-evenly;
+                gap: 0;
+            }
+
+            .btn-control {
+                width: auto;
+                height: 56px;
+                padding: 0 32px;
+                flex-direction: row;
+                border-radius: 99px;
+                font-size: 16px;
+                gap: 8px;
+            }
+
+            .btn-control .material-icons {
+                font-size: 24px;
+            }
+
+            #video-wrapper {
+                padding: 12px;
+            }
+
+            /* Change Zego stack to vertical on mobile */
+            #zego-mount>div>div:first-of-type {
+                flex-direction: column !important;
+                padding: 8px !important;
+                gap: 8px !important;
+            }
         }
     </style>
 </head>
@@ -182,62 +387,40 @@
             const footer = document.querySelector('footer');
             const nav = document.querySelector('nav');
 
-            // Set up Video Container
+            // Set up Video Container (Main Layout Wrapper)
             const videoContainer = document.createElement('div');
             videoContainer.id = 'video-container';
-            videoContainer.style.width = '100vw';
-            videoContainer.style.height = '100vh';
-            videoContainer.style.position = 'fixed';
-            videoContainer.style.top = '0';
-            videoContainer.style.left = '0';
-            videoContainer.style.zIndex = '9999';
-            videoContainer.style.backgroundColor = '#101922';
-            videoContainer.style.display = 'none';
             document.body.appendChild(videoContainer);
 
-            // Set up Waiting Overlay
+            // Set up Controls Sidebar (Left on Desktop, Bottom on Mobile)
+            const controlsSidebar = document.createElement('div');
+            controlsSidebar.id = 'controls-sidebar';
+            controlsSidebar.innerHTML = `
+                <button id="next-btn" class="btn-control btn-next">
+                    <span class="material-icons">skip_next</span>
+                    <span>Next</span>
+                </button>
+                <button id="stop-btn" class="btn-control btn-stop">
+                    <span class="material-icons">stop</span>
+                    <span>Stop</span>
+                </button>
+            `;
+            videoContainer.appendChild(controlsSidebar);
+
+            // Set up Video Wrapper (The 50/50 container)
+            const videoWrapper = document.createElement('div');
+            videoWrapper.id = 'video-wrapper';
+            videoContainer.appendChild(videoWrapper);
+
+            // Set up Waiting Overlay (Goes inside Video Wrapper)
             const waitingOverlay = document.createElement('div');
             waitingOverlay.id = 'waiting-overlay';
-            waitingOverlay.style.position = 'absolute';
-            waitingOverlay.style.top = '0';
-            waitingOverlay.style.left = '0';
-            waitingOverlay.style.width = '100%';
-            waitingOverlay.style.height = '100%';
-            waitingOverlay.style.display = 'none';
-            waitingOverlay.style.flexDirection = 'column';
-            waitingOverlay.style.justifyContent = 'center';
-            waitingOverlay.style.alignItems = 'center';
-            waitingOverlay.style.backgroundColor = 'rgba(16, 25, 34, 0.9)';
-            waitingOverlay.style.color = 'white';
-            waitingOverlay.style.zIndex = '10000';
             waitingOverlay.innerHTML = `
                 <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mb-4"></div>
                 <h2 class="text-2xl font-bold">Looking for a stranger...</h2>
-                <button id="cancel-btn" class="mt-8 px-6 py-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 transition-all font-semibold">Cancel</button>
+                <button id="cancel-btn" class="mt-8 px-6 py-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 transition-all font-semibold cursor-pointer">Cancel</button>
             `;
-            videoContainer.appendChild(waitingOverlay);
-
-            // Set up Controls Overlay (Next Button)
-            const controlsOverlay = document.createElement('div');
-            controlsOverlay.id = 'controls-overlay';
-            controlsOverlay.style.position = 'absolute';
-            controlsOverlay.style.bottom = '40px';
-            controlsOverlay.style.left = '0';
-            controlsOverlay.style.width = '100%';
-            controlsOverlay.style.display = 'none';
-            controlsOverlay.style.justifyContent = 'center';
-            controlsOverlay.style.gap = '20px';
-            controlsOverlay.style.zIndex = '10001';
-            controlsOverlay.style.pointerEvents = 'none'; // Let clicks pass through except on buttons
-            controlsOverlay.innerHTML = `
-                <button id="next-btn" style="pointer-events: auto;" class="px-8 py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition-all font-bold shadow-lg shadow-primary/30 flex items-center gap-2 text-lg">
-                    <span class="material-icons">skip_next</span> Next
-                </button>
-                <button id="stop-btn" style="pointer-events: auto;" class="px-8 py-4 bg-slate-800 text-white rounded-full hover:bg-slate-700 transition-all font-bold shadow-lg flex items-center gap-2 text-lg">
-                    <span class="material-icons">stop</span> Stop
-                </button>
-            `;
-            videoContainer.appendChild(controlsOverlay);
+            videoWrapper.appendChild(waitingOverlay);
 
             let zp = null;
             let socket = null;
@@ -263,8 +446,7 @@
 
                 socket.on('partner_left', (data) => {
                     console.log("Partner left:", data.message);
-                    // Provide a visual cue here if needed, or automatically next
-                    // Let's automatically re-queue after a short delay
+                    // Automatically re-queue after a short delay
                     setTimeout(() => {
                         socket.emit('next');
                     }, 1000);
@@ -278,14 +460,15 @@
             }
 
             function showWaiting() {
+                videoContainer.style.display = 'flex';
+                controlsSidebar.style.display = 'none'; // Hide sidebar while waiting
                 waitingOverlay.style.display = 'flex';
-                controlsOverlay.style.display = 'none';
                 leaveZegoRoom(); // Ensure any previous room is left
             }
 
             function joinZegoRoom(roomID) {
                 waitingOverlay.style.display = 'none';
-                controlsOverlay.style.display = 'flex';
+                controlsSidebar.style.display = 'flex'; // Show controls side panel
 
                 const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(APP_ID, SERVER_SECRET, roomID, myUserID, myUserName);
                 zp = ZegoUIKitPrebuilt.create(kitToken);
@@ -295,9 +478,7 @@
                 if (!zegoMount) {
                     zegoMount = document.createElement('div');
                     zegoMount.id = 'zego-mount';
-                    zegoMount.style.width = '100%';
-                    zegoMount.style.height = '100%';
-                    videoContainer.insertBefore(zegoMount, waitingOverlay);
+                    videoWrapper.insertBefore(zegoMount, waitingOverlay);
                 }
 
                 zp.joinRoom({
@@ -306,10 +487,13 @@
                     scenario: {
                         mode: ZegoUIKitPrebuilt.OneONoneCall, // 1-on-1 call
                     },
-                    showPreJoinView: false, // Skip pre-join to make it fast like Omegle
+                    showPreJoinView: false, // Skip pre-join
                     onLeaveRoom: () => {
                         handleStop();
-                    }
+                    },
+                    // We can also tweak layout mode config dynamically if needed, 
+                    // though CSS overrides above are stronger
+                    layout: "Grid"
                 });
             }
 
@@ -336,8 +520,8 @@
                 if (footer) footer.style.display = 'none';
                 if (nav) nav.style.display = 'none';
 
-                // Show video container
-                videoContainer.style.display = 'block';
+                // Show video container via JS
+                videoContainer.style.display = 'flex';
 
                 initSocket();
                 socket.emit('join_queue');
@@ -360,18 +544,18 @@
                 startBtn.addEventListener('click', startApp);
             }
 
-            document.getElementById('cancel-btn').addEventListener('click', () => {
-                handleStop();
-            });
+            // Notice we bind to the body/document and filter since these elements might be re-created
+            document.body.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
 
-            document.getElementById('next-btn').addEventListener('click', () => {
-                if (socket) {
-                    socket.emit('next');
+                if (target.id === 'cancel-btn') {
+                    handleStop();
+                } else if (target.id === 'next-btn') {
+                    if (socket) socket.emit('next');
+                } else if (target.id === 'stop-btn') {
+                    handleStop();
                 }
-            });
-
-            document.getElementById('stop-btn').addEventListener('click', () => {
-                handleStop();
             });
 
             // Interest Chips - Remove (keep original functionality)
